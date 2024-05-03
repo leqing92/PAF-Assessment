@@ -12,6 +12,7 @@ public class OrderRepository {
 	@Autowired
 	MongoTemplate mongoTemp;
 	// TODO: Task 5
+	// db.orders.insert({ ... })
 	public void insertPO(PurchaseOrder po){
 		mongoTemp.save(po, "orders");
 	}
