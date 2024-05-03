@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>        
+        <h1>
+            <span data-th-text="${styleName}"></span>
+        </h1>
+        <a href = "/">Back</a>
+        <div data-th-if = "${not #lists.isEmpty(beers)}">
+            <table border = 1>
+                <thead>
+                    <th>Beer Name</th>
+                    <th>Description</th>
+                    <th>Brewery Name</th>
+                </thead>
+                <tbody>
+                    <tr data-th-each = "b : ${beers}">
+                        <td data-th-text = "${b.beerName}"></td>
+                        <td data-th-text = "${b.beerDescription}"></td>
+                        <td>
+                            <a data-th-href = "@{/brewery/{id}(id=*{b.breweryId})}">
+                                <span data-th-text = "${b.breweryName}"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div data-th-unless = "${not #lists.isEmpty(beers)}">
+            <h2> No beers found for this style</h2>            
+        </div>
+    </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div data-th-if = "${notFound}">
+        <h1>Brewery not found</h1>
+        <a href = "/">Back</a>
+    </div>    
+    
+    <div data-th-unless = "${notFound}">
+        <h1><span data-th-text= "${brewery.name}"></span></h1>
+        <a href = "/">Back</a>
+        <table border = 0>
+            <tr>
+                <td>Description:</td>
+                <td><span data-th-text = "${brewery.description}"></span></td>
+            </tr>
+            <tr>
+                <td>Address:</td>
+                <td>
+                    <div data-th-text = "${brewery.address1}"></div>
+                    <div data-th-text = "${brewery.address2}"></div>
+                    <div data-th-text = "${brewery.city}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>Phone:</td>
+                <td><span data-th-text = "${brewery.phone}"></span></td>
+            </tr>
+            <tr>
+                <td>Website:</td>
+                <td>
+                    <a data-th-href = "@{${brewery.website}}">Go</a>
+                </td>
+            </tr>
+        </table>
+        <h2>Beers</h2>
+        <table border = 1>
+            <form method="POST" data-th-action="@{/brewery/{id}/order(id=${brewery.breweryId})}">
+                <button type = "submit"> Place Order </button>
+                <thead>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                </thead>
+                <tbody>
+                    <tr data-th-each="beer: ${brewery.beers}" data-th-object="${beer}">
+                        <td data-th-text = "${beer.beerName}"></td>
+                        <td data-th-text = "${beer.beerDescription}"></td>
+                        <td>
+                            <input type = "hidden" data-th-value = "${brewery.breweryId}" name = "breweryId">                            
+                            <input type = "hidden" data-th-value = "${beer.beerId}" name = "beerId">                                
+                            <input type = "number" name= "quantity" min = 0>                            
+                        </td>
+                    </tr>
+                </tbody>
+            </form>
+        </table>
+    </div>
+</body>
+</html>
