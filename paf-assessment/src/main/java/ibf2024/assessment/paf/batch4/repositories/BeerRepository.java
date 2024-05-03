@@ -65,6 +65,50 @@ public class BeerRepository {
 	// TODO: Task 4
 	public Optional<Brewery> getBeersFromBrewery(String id) {
 		
+		SqlRowSet rs = jdbcTemp.queryForRowSet(Queries.GET_BREWERY_BY_ID_SORTED, Integer.parseInt(id));
+		List<Beer> beers = new LinkedList<>();
+		Brewery brewery = new Brewery();
+		if(!isBreweryExist(id)){
+			return Optional.empty();
+		}else{
+			while(rs.next()){
+				
+				brewery.setBreweryId(rs.getInt("breweryId"));
+				brewery.setName(rs.getString("name"));
+				brewery.setAddress1(rs.getString("address1"));
+				brewery.setAddress2(rs.getString("address2"));
+				brewery.setCity(rs.getString("city"));
+				brewery.setPhone(rs.getString("phone"));
+				brewery.setWebsite(rs.getString("website"));
+				brewery.setDescription(rs.getString("description"));
+				
+				Beer beer = new Beer();
+				beer.setBeerId(rs.getInt("beerId"));
+				beer.setBeerName(rs.getString("beerName"));
+				beer.setBeerDescription(rs.getString("beerDesciption"));
+				beers.add(beer);			
+								
+			}
+			brewery.setBeers(beers);
+
+			return Optional.of(brewery);
+		}		
+	}
+
+	public Boolean isBreweryExist (String id){
+		SqlRowSet rs = jdbcTemp.queryForRowSet(Queries.COUNT_BREWERY_BY_ID, Integer.parseInt(id));
+		if(rs.next()){
+			int x = rs.getInt("count");
+			if(x > 0){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//Task 4 without sorted
+	public Optional<Brewery> getBeersFromBrewery3(String id) {
+		
 		SqlRowSet rs = jdbcTemp.queryForRowSet(Queries.GET_BREWERY_BY_ID, Integer.parseInt(id));
 
 		if(!isBreweryExist(id)){
@@ -97,16 +141,5 @@ public class BeerRepository {
 
 			return Optional.of(brewery);
 		}		
-	}
-
-	public Boolean isBreweryExist (String id){
-		SqlRowSet rs = jdbcTemp.queryForRowSet(Queries.COUNT_BREWERY_BY_ID, Integer.parseInt(id));
-		if(rs.next()){
-			int x = rs.getInt("count");
-			if(x > 0){
-				return true;
-			}
-		}
-		return false;
 	}
 }

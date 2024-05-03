@@ -50,6 +50,27 @@ public class Queries {
         where bs.id = ?) as agg;
     """;
 
+    public static final String GET_BREWERY_BY_ID_SORTED =
+    """
+        select
+            b.id as beerId,
+            b.name as beerName,
+            b.descript as beerDesciption,
+            bs.id as breweryId,
+            bs.name as name,
+            bs.address1 as address1,
+            bs.address2 as address2,
+            bs.city as city,
+            bs.phone as phone,
+            bs.website as website,
+            bs.descript as description
+            from breweries as bs
+            left join beers as b
+            on bs.id = b.brewery_id
+            where bs.id = ?
+            order by beerName;        
+    """;
+
     public static final String COUNT_BREWERY_BY_ID = 
     """
         select count(*) as count from breweries where id =?;
