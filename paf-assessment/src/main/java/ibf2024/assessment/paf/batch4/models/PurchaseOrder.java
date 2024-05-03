@@ -1,7 +1,6 @@
 package ibf2024.assessment.paf.batch4.models;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.json.Json;
